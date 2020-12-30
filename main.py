@@ -22,14 +22,23 @@ class RootWidget(ScreenManager):
 
 class SignUpScreen(Screen):
     def add_user(self, uname, pword):
-        with open("users.json") as file:
+        with open("users.json", "r") as file:
             users = json.load(file)
             #add to the dictonary
-            users[uname] = {'username' : uname, 'password' : pword,
+        users[uname] = {'username' : uname, 'password' : pword,
             'created': datetime.now().strftime("%Y-%m-%d %H-%M-%S")}
 
-            with open("users.json", "w") as file:
-                json.dump(users,file)
+        with open("users.json", "w") as file:
+            json.dump(users, file)
+
+        #lets redirect the user
+        self.manager.current = "sign_up_screen_success"
+
+class SignUpScreenSuccess(Screen):
+    def go_to_login(self):
+
+        self.manager.transition.direction = "right"
+        self.manager.current = "login_screen"
 
 class MainApp(App):
     def build(self):
